@@ -1,29 +1,23 @@
 package br.com.palpitecerto.model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "time")
 public class Time {
 
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(length = 50, nullable = false)
 	private String nome;
 	
-	@Column(length = 2, nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Estado estado;
-
 	
 	public Long getId() {
 		return id;
