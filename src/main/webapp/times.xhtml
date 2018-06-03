@@ -23,11 +23,55 @@
 				</p:column>
 	
 				<p:column width="100" styleClass="center">
-					<p:commandLink title="Editar">
+					<p:commandLink oncomplete="PF('dialogo-cadastro').show();" title="Editar"
+						process="@this" update="dialogo-cadastro" resetValues="dialogo-cadastro">
 						<i class="fa fa-pencil" />
+						<f:setPropertyActionListener value="#{time}" target="#{timesBean.time}" />
 					</p:commandLink>
 				</p:column>
 			</p:dataTable>
+			
+			<br />
+		
+			<p:commandButton value="Adicionar" oncomplete="PF('dialogo-cadastro').show();"
+				process="@this" resetValues="dialogo-cadastro" update="dialogo-cadastro" 
+				icon="fa fa-plus-circle" />
 		</h:form>
+		
+		<p:dialog id="dialogo-cadastro" widgetVar="dialogo-cadastro"
+			header="Novo Time" modal="true" resizable="false"
+			width="400px">
+		
+			<h:form id="dialogo-cadastro-form" prependId="false">
+				<p:messages id="dialogo-msg" autoUpdate="false" closable="true" />
+			
+				<div class="ui-g ui-fluid">
+					<div class="ui-g-12">
+						<label class="control-label">Nome</label>
+						<p:inputText value="#{timesBean.time.nome}" maxlength="50" />
+					</div>
+					
+					<div class="ui-g-12">
+						<label class="control-label">Estado</label>
+						<p:selectOneMenu value="#{timesBean.time.estado}">
+							<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
+							<f:selectItems value="#{timesBean.estados}" var="estado"
+								itemLabel="#{estado.descricao}" itemValue="#{estado}" />
+						</p:selectOneMenu>
+					</div>
+				</div>
+				
+				<div class="ui-g">
+					<div class="ui-g-12 right" style="margin-top:15px">
+						<p:commandButton value="Cancelar" oncomplete="PF('dialogo-cadastro').hide();"
+							update="@form" icon="fa fa-ban" process="@this" style="margin-right:5px" />
+
+						<p:commandButton value="Salvar" action="#{timesBean.salvar()}"
+							update="@form" icon="fa fa-save" />
+					</div>
+				</div>
+			</h:form>
+		</p:dialog>
+		
 	</ui:define>
 </ui:composition>

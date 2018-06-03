@@ -1,3 +1,11 @@
+.control-label {
+	display: block;
+	margin-bottom: 5px;
+}
+.riquired::after {
+	content: ' *';
+	color: red;
+}
 .center {
 	text-align: center;
 }

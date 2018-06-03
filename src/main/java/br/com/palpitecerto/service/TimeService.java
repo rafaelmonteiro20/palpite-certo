@@ -18,8 +18,12 @@ public class TimeService implements Serializable {
 	@Inject
 	private TimeDao timeDao;
 	
+	public void salvar(Time time) {
+		System.out.println("Salvando time: " + time);
+	}
+
 	public List<Time> listar() {
 		return timeDao.listar();
 	}
-	
+
 }
