@@ -6,7 +6,9 @@ import java.util.List;
 import javax.inject.Inject;
 
 import br.com.palpitecerto.dao.TimeDao;
+import br.com.palpitecerto.infra.jpa.Transactional;
 import br.com.palpitecerto.model.Time;
+import br.com.palpitecerto.service.exception.RegistroExistenteException;
 
 public class TimeService implements Serializable {
 
@@ -18,8 +20,23 @@ public class TimeService implements Serializable {
 	@Inject
 	private TimeDao timeDao;
 	
+	@Transactional
 	public void salvar(Time time) {
-		System.out.println("Salvando time: " + time);
+
+		if(isTimeExistente(time))
+			throw new RegistroExistenteException("Time já cadastrado.");
+		
+		timeDao.salvar(time);
+	}
+
+	private boolean isTimeExistente(Time time) {
+		
+		Time existente = timeDao.buscarPorNome(time.getNome());
+		
+		if(existente == null || existente.equals(time))
+			return false;
+		
+		return true;
 	}
 
 	public List<Time> listar() {

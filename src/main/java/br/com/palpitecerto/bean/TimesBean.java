@@ -8,10 +8,11 @@ import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import br.com.palpitecerto.infra.jsf.MessagesHelper;
+import br.com.palpitecerto.infra.jsf.FacesUtil;
 import br.com.palpitecerto.model.Estado;
 import br.com.palpitecerto.model.Time;
 import br.com.palpitecerto.service.TimeService;
+import br.com.palpitecerto.service.exception.RegistroExistenteException;
 
 @Named
 @ViewScoped
@@ -23,7 +24,7 @@ public class TimesBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Inject
-	private MessagesHelper helper;
+	private FacesUtil facesUtil;
 	
 	@Inject
 	private TimeService timeService;
@@ -33,17 +34,27 @@ public class TimesBean implements Serializable {
 	
 	@PostConstruct
 	public void init() {
-		times = timeService.listar();
-		time = new Time();
+		atualizarTimes();
+		novoTime();
 	}
 	
 	public void salvar() {
 		try {
 			timeService.salvar(time);
-			helper.addInfoMessage("Time salvo com sucesso.");
-		} catch (Exception e) {
-
+			atualizarTimes();
+			facesUtil.addInfoMessage("Time salvo com sucesso.");
+			facesUtil.updateComponents("mensagens", "times-tabela");
+		} catch (RegistroExistenteException e) {
+			facesUtil.validationFailed(e.getMessage());
 		}
+	}
+	
+	public void novoTime() {
+		time = new Time();
+	}
+	
+	private void atualizarTimes() {
+		times = timeService.listar();
 	}
 	
 	public Time getTime() {
