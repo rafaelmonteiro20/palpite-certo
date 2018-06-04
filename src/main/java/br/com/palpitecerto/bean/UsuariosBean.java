@@ -7,7 +7,7 @@ import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import br.com.palpitecerto.infra.jsf.MessagesHelper;
+import br.com.palpitecerto.infra.jsf.FacesUtil;
 import br.com.palpitecerto.model.Perfil;
 import br.com.palpitecerto.model.Usuario;
 import br.com.palpitecerto.service.UsuarioService;
@@ -22,7 +22,7 @@ public class UsuariosBean implements Serializable {
 	private UsuarioService usuarioService;
 
 	@Inject
-	private MessagesHelper helper;
+	private FacesUtil facesUtil;
 
 	private Usuario usuario;
 
@@ -34,7 +34,8 @@ public class UsuariosBean implements Serializable {
 	public String salvarJogador() {
 		usuario.setPerfil(Perfil.JOGADOR);
 		usuarioService.salvarOuAtualizar(usuario);
-		helper.addFlash("Usuário criado com sucesso, realize seu login.");
+		facesUtil.addFlash("Usuário criado com sucesso, realize seu login.");
+		facesUtil.updateComponents("mensagens");
 		return "/login.xhtml?faces-redirect=true";
 	}
 
