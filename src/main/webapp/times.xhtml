@@ -9,6 +9,8 @@
 
 	<ui:define name="conteudo">
 		<h1>Times</h1>
+		
+		<p:messages id="mensagens" closable="true" />
 
 		<h:form id="form-tabela" prependId="false">
 			<p:dataTable id="times-tabela" value="#{timesBean.times}" var="time"
@@ -35,7 +37,7 @@
 		
 			<p:commandButton value="Adicionar" oncomplete="PF('dialogo-cadastro').show();"
 				process="@this" resetValues="dialogo-cadastro" update="dialogo-cadastro" 
-				icon="fa fa-plus-circle" />
+				icon="fa fa-plus-circle" action="#{timesBean.novoTime()}" />
 		</h:form>
 		
 		<p:dialog id="dialogo-cadastro" widgetVar="dialogo-cadastro"
@@ -67,6 +69,7 @@
 							update="@form" icon="fa fa-ban" process="@this" style="margin-right:5px" />
 
 						<p:commandButton value="Salvar" action="#{timesBean.salvar()}"
+							oncomplete="if(!args.validationFailed) PF('dialogo-cadastro').hide();"
 							update="@form" icon="fa fa-save" />
 					</div>
 				</div>
