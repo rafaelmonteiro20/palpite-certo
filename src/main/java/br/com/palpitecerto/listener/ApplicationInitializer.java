@@ -12,7 +12,7 @@ public class ApplicationInitializer implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
 		Flyway flyway = new Flyway();
-		flyway.setDataSource("jdbc:mysql://localhost:3306/palpite_certo", "root", "123456");
+		flyway.setDataSource("jdbc:mysql://localhost:3306/palpite_certo", "root", "root");
 		flyway.setBaselineOnMigrate(true);
 		flyway.migrate();
 	}

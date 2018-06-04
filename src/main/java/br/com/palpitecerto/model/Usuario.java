@@ -1,23 +1,34 @@
 package br.com.palpitecerto.model;
 
-import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+@Entity
 public class Usuario {
-
-	private Long id;
-	private String login;
-	private String senha;
-	private Perfil perfil;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	@NotBlank
+	@Size(max = 50)
+	private String login;
+	
+	@NotBlank
+	private String senha;
+	
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private Perfil perfil;
+
 	public Long getId() {
 		return id;
 	}
@@ -26,8 +37,6 @@ public class Usuario {
 		this.id = id;
 	}
 
-	@NotBlank
-	@Column(nullable = false, length = 50)
 	public String getLogin() {
 		return login;
 	}
@@ -36,8 +45,6 @@ public class Usuario {
 		this.login = login;
 	}
 
-	@NotBlank
-	@Column(nullable = false, length = 50)
 	public String getSenha() {
 		return senha;
 	}
@@ -46,8 +53,6 @@ public class Usuario {
 		this.senha = senha;
 	}
 
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false, length = 15)
 	public Perfil getPerfil() {
 		return perfil;
 	}

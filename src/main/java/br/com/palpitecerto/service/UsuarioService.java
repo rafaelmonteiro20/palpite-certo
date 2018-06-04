@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import br.com.palpitecerto.dao.UsuarioDAO;
 import br.com.palpitecerto.infra.jpa.Transactional;
 import br.com.palpitecerto.model.Usuario;
+import br.com.palpitecerto.security.Criptografia;
 
 public class UsuarioService implements Serializable {
 
@@ -22,6 +23,7 @@ public class UsuarioService implements Serializable {
 	
 	@Transactional
 	public void salvarOuAtualizar(Usuario usuario) {
+		usuario.setSenha(Criptografia.criptografar(usuario.getSenha()));
 		usuarioDAO.salvarOuAtualizar(usuario);
 	}
 	
