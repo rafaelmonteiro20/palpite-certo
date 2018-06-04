@@ -43,4 +43,9 @@ public class TimeService implements Serializable {
 		return timeDao.listar();
 	}
 
+	@Transactional
+	public void remover(Time time) {
+		timeDao.remover(time);
+	}
+
 }

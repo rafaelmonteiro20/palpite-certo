@@ -37,5 +37,13 @@ public class TimeDao implements Serializable {
 			return null;
 		}
 	}
+
+	public void remover(Time time) {
+		time = manager.find(Time.class, time.getId());
+		
+		if(time != null) {
+			manager.remove(time);
+		}
+	}
 	
 }

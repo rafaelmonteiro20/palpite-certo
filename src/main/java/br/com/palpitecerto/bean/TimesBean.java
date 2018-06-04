@@ -41,14 +41,27 @@ public class TimesBean implements Serializable {
 	public void salvar() {
 		try {
 			timeService.salvar(time);
-			atualizarTimes();
-			facesUtil.addInfoMessage("Time salvo com sucesso.");
-			facesUtil.updateComponents("mensagens", "times-tabela");
+			onSuccess("Time salvo com sucesso.");
 		} catch (RegistroExistenteException e) {
 			facesUtil.validationFailed(e.getMessage());
 		}
 	}
 	
+	public void remover(Time time) {
+		try {
+			timeService.remover(time);
+			onSuccess("Time removido com sucesso.");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void onSuccess(String mensagem) {
+		atualizarTimes();
+		facesUtil.addInfoMessage(mensagem);
+		facesUtil.updateComponents("mensagens", "times-tabela");
+	}
+
 	public void novoTime() {
 		time = new Time();
 	}

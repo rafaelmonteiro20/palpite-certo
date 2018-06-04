@@ -30,6 +30,13 @@
 						<i class="fa fa-pencil" />
 						<f:setPropertyActionListener value="#{time}" target="#{timesBean.time}" />
 					</p:commandLink>
+					
+					<p:commandLink action="#{timesBean.remover(time)}" title="Editar" 
+						process="@this" styleClass="action-icon">
+						<i class="fa fa-trash" />
+						<p:confirm header="Confirmação" message="Deseja realmente remover o time selecionado?" 
+							icon="ui-icon-alert" />
+					</p:commandLink>
 				</p:column>
 			</p:dataTable>
 			
@@ -38,6 +45,11 @@
 			<p:commandButton value="Adicionar" oncomplete="PF('dialogo-cadastro').show();"
 				process="@this" resetValues="dialogo-cadastro" update="dialogo-cadastro" 
 				icon="fa fa-plus-circle" action="#{timesBean.novoTime()}" />
+				
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+		        <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+		        <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+		    </p:confirmDialog>
 		</h:form>
 		
 		<p:dialog id="dialogo-cadastro" widgetVar="dialogo-cadastro"
