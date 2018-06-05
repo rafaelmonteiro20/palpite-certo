@@ -1,0 +1,157 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Partidas</ui:define>
+
+	<ui:define name="conteudo">
+		<div class="ui-g-12">
+			<h:form id="form-tabela" prependId="false">
+
+				<h1>Partidas</h1>
+
+				<p:messages id="mensagens" closable="true" />
+
+				<strong><label class="control-label">Campeonato:</label></strong>
+				<p:selectOneMenu value="#{partidasBean.filter.campeonato}"
+					converter="campeonatoConverter">
+					<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
+					<f:selectItems value="#{partidasBean.campeonatos}" var="camp"
+						itemLabel="#{camp.nome} - #{camp.periodo}" itemValue="#{camp}" />
+					<f:ajax listener="#{partidasBean.atualizarPartidas()}"
+						render="@form" />
+				</p:selectOneMenu>
+
+				<hr />
+				<br />
+
+				<p:accordionPanel value="#{partidasBean.rodadas}" var="rodada">
+					<p:tab title="#{rodada.numero}ª rodada">
+						<table>
+							<thead>
+								<tr>
+									<th>MANDANTE</th>
+									<th>VISITANTE</th>
+									<th>RESULTADO</th>
+								</tr>
+							</thead>
+							<tbody>
+								<ui:repeat value="#{partidasBean.partidasPorRodada(rodada)}"
+									var="partida">
+									<tr>
+										<td>#{partida.mandante.nome}-#{partida.mandante.estado}</td>
+										<td>#{partida.visitante.nome}-#{partida.visitante.estado}</td>
+										<td>#{partida.resultado.descricao}</td>
+									</tr>
+								</ui:repeat>
+							</tbody>
+						</table>
+					</p:tab>
+				</p:accordionPanel>
+
+				<!-- 			<p:dataTable id="partidas-tabela" value="#{partidasBean.partidas}" -->
+				<!-- 				var="partida" emptyMessage="Nenhum registro encontrado."> -->
+
+				<!-- 				<p:column headerText="Mandante"> -->
+				<!-- 					<label>#{partida.mandante.nome}-#{partida.mandante.estado}</label> -->
+				<!-- 				</p:column> -->
+
+				<!-- 				<p:column headerText="Visitante"> -->
+				<!-- 					<label>#{partida.visitante.nome}-#{partida.visitante.estado}</label> -->
+				<!-- 				</p:column> -->
+
+				<!-- 				<p:column headerText="Resultado" width="150"> -->
+				<!-- 					<label>#{partida.resultado.descricao}</label> -->
+				<!-- 				</p:column> -->
+
+				<!-- 				<p:column width="100" styleClass="center" headerText="Editar"> -->
+				<!-- 					<p:commandLink oncomplete="PF('dialogo-cadastro').show();" -->
+				<!-- 						title="Editar" process="@this" update="dialogo-cadastro" -->
+				<!-- 						resetValues="dialogo-cadastro"> -->
+				<!-- 						<i class="fa fa-pencil" /> -->
+				<!-- 						<f:setPropertyActionListener value="#{partida}" -->
+				<!-- 							target="#{partidasBean.partida}" /> -->
+				<!-- 					</p:commandLink> -->
+				<!-- 				</p:column> -->
+				<!-- 			</p:dataTable> -->
+
+				<br />
+
+				<p:commandButton value="Adicionar"
+					oncomplete="PF('dialogo-cadastro').show();" process="@this"
+					resetValues="dialogo-cadastro" update="dialogo-cadastro"
+					icon="fa fa-plus-circle" action="#{partidasBean.novaPartida()}" />
+			</h:form>
+		</div>
+
+		<p:dialog id="dialogo-cadastro" widgetVar="dialogo-cadastro"
+			header="Nova Partida" modal="true" resizable="false" width="400px">
+
+			<h:form id="dialogo-cadastro-form" prependId="false">
+				<p:messages id="dialogo-msg" autoUpdate="false" closable="true" />
+
+				<div class="ui-g ui-fluid">
+					<div class="ui-g-12">
+						<label class="control-label">Campeonato</label>
+						<label>#{partidasBean.filter.campeonato.nome}</label>
+					</div>
+
+					<div class="ui-g-12">
+						<label class="control-label">Rodada</label>
+						<p:selectOneMenu value="#{partidasBean.partida.rodada}"
+							converter="rodadaConverter">
+							<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
+							<f:selectItems value="#{partidasBean.rodadas}" var="rodada"
+								itemLabel="#{rodada.numero}ª" itemValue="#{rodada}" />
+						</p:selectOneMenu>
+					</div>
+
+					<div class="ui-g-12">
+						<label class="control-label">Mandante</label>
+						<p:selectOneMenu value="#{partidasBean.partida.mandante}"
+							converter="timeConverter">
+							<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
+							<f:selectItems value="#{partidasBean.times}" var="time"
+								itemLabel="#{time.nome}" itemValue="#{time}" />
+						</p:selectOneMenu>
+					</div>
+
+					<div class="ui-g-12">
+						<label class="control-label">Visitante</label>
+						<p:selectOneMenu value="#{partidasBean.partida.visitante}"
+							converter="timeConverter">
+							<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
+							<f:selectItems value="#{partidasBean.times}" var="time"
+								itemLabel="#{time.nome}" itemValue="#{time}" />
+						</p:selectOneMenu>
+					</div>
+
+					<div class="ui-g-12">
+						<label class="control-label">Resultado</label>
+						<p:selectOneMenu value="#{partidasBean.partida.resultado}"
+							converter="resultadoConverter">
+							<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
+							<f:selectItems value="#{partidasBean.resultados}" var="res"
+								itemLabel="#{res.descricao}" itemValue="#{res}" />
+						</p:selectOneMenu>
+					</div>
+				</div>
+
+				<div class="ui-g">
+					<div class="ui-g-12 right" style="margin-top: 15px">
+						<p:commandButton value="Cancelar"
+							oncomplete="PF('dialogo-cadastro').hide();" update="@form"
+							icon="fa fa-ban" process="@this" style="margin-right:5px" />
+
+						<p:commandButton value="Salvar" action="#{partidasBean.salvar()}"
+							oncomplete="if(!args.validationFailed) PF('dialogo-cadastro').hide();"
+							update="@form" icon="fa fa-save" />
+					</div>
+				</div>
+			</h:form>
+		</p:dialog>
+	</ui:define>
+</ui:composition>

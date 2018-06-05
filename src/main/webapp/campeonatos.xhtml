@@ -1,0 +1,84 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Campeonatos</ui:define>
+
+	<ui:define name="conteudo">
+		<h1>Campeonatos</h1>
+
+		<p:messages id="mensagens" closable="true" />
+
+		<h:form id="form-tabela" prependId="false">
+			<p:dataTable id="campeonatos-tabela"
+				value="#{campeonatosBean.campeonatos}" var="campeonato"
+				emptyMessage="Nenhum registro encontrado.">
+
+				<p:column headerText="Nome">
+					<label>#{campeonato.nome}</label>
+				</p:column>
+
+				<p:column headerText="Período">
+					<label>#{campeonato.periodo}</label>
+				</p:column>
+
+				<p:column width="100" styleClass="center">
+					<p:commandLink oncomplete="PF('dialogo-cadastro').show();"
+						title="Editar" process="@this" update="dialogo-cadastro"
+						resetValues="dialogo-cadastro">
+						<i class="fa fa-pencil" />
+						<f:setPropertyActionListener value="#{campeonato}"
+							target="#{campeonatosBean.campeonato}" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+
+			<br />
+
+			<p:commandButton value="Adicionar"
+				oncomplete="PF('dialogo-cadastro').show();" process="@this"
+				resetValues="dialogo-cadastro" update="dialogo-cadastro"
+				icon="fa fa-plus-circle"
+				action="#{campeonatosBean.novoCampeonato()}" />
+		</h:form>
+
+		<p:dialog id="dialogo-cadastro" widgetVar="dialogo-cadastro"
+			header="Novo Campeonato" modal="true" resizable="false" width="400px">
+
+			<h:form id="dialogo-cadastro-form" prependId="false">
+				<p:messages id="dialogo-msg" autoUpdate="false" closable="true" />
+
+				<div class="ui-g ui-fluid">
+					<div class="ui-g-12">
+						<label class="control-label">Nome</label>
+						<p:inputText value="#{campeonatosBean.campeonato.nome}"
+							maxlength="60" />
+					</div>
+
+					<div class="ui-g-12">
+						<label class="control-label">Período</label>
+						<p:inputText value="#{campeonatosBean.campeonato.periodo}"
+							maxlength="20" />
+					</div>
+				</div>
+
+				<div class="ui-g">
+					<div class="ui-g-12 right" style="margin-top: 15px">
+						<p:commandButton value="Cancelar"
+							oncomplete="PF('dialogo-cadastro').hide();" update="@form"
+							icon="fa fa-ban" process="@this" style="margin-right:5px" />
+
+						<p:commandButton value="Salvar"
+							action="#{campeonatosBean.salvar()}"
+							oncomplete="if(!args.validationFailed) PF('dialogo-cadastro').hide();"
+							update="@form" icon="fa fa-save" />
+					</div>
+				</div>
+			</h:form>
+		</p:dialog>
+
+	</ui:define>
+</ui:composition>

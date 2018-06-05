@@ -3,25 +3,32 @@ package br.com.palpitecerto.model;
 import java.io.Serializable;
 
 import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-public class Usuario implements Serializable {
+@Entity
+@Table(name = "campeonato")
+public class Campeonato implements Serializable {
 
-	private static final long serialVersionUID = 5870094586886573511L;
-
-	private Long id;
-	private String login;
-	private String senha;
-	private Perfil perfil;
+	private static final long serialVersionUID = -4662888554790658629L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	
+	@NotBlank
+	@Column(nullable = false, length = 60)
+	private String nome;
+	
+	@NotBlank
+	@Column(nullable = false, length = 20)
+	private String periodo;
+
 	public Long getId() {
 		return id;
 	}
@@ -30,34 +37,20 @@ public class Usuario implements Serializable {
 		this.id = id;
 	}
 
-	@NotBlank
-	@Column(nullable = false, length = 50)
-	public String getLogin() {
-		return login;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setLogin(String login) {
-		this.login = login;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
-	@NotBlank
-	@Column(nullable = false, length = 50)
-	public String getSenha() {
-		return senha;
+	public String getPeriodo() {
+		return periodo;
 	}
 
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
-
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false, length = 15)
-	public Perfil getPerfil() {
-		return perfil;
-	}
-
-	public void setPerfil(Perfil perfil) {
-		this.perfil = perfil;
+	public void setPeriodo(String periodo) {
+		this.periodo = periodo;
 	}
 
 	@Override
@@ -76,7 +69,7 @@ public class Usuario implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Usuario other = (Usuario) obj;
+		Campeonato other = (Campeonato) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -84,5 +77,4 @@ public class Usuario implements Serializable {
 			return false;
 		return true;
 	}
-
 }
