@@ -17,17 +17,21 @@ public class Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@NotBlank
 	@Size(max = 50)
 	private String login;
-	
+
 	@NotBlank
 	private String senha;
-	
+
 	@NotNull
 	@Enumerated(EnumType.STRING)
-	private Perfil perfil;
+	private Perfil perfil = Perfil.JOGADOR;
+
+	@NotNull
+	@Enumerated(EnumType.STRING)
+	private Status status = Status.ATIVO;
 
 	public Long getId() {
 		return id;
@@ -59,6 +63,14 @@ public class Usuario {
 
 	public void setPerfil(Perfil perfil) {
 		this.perfil = perfil;
+	}
+
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
 	}
 
 	@Override

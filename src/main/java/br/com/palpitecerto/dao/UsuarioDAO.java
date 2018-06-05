@@ -18,15 +18,20 @@ public class UsuarioDAO implements Serializable {
 	public List<Usuario> listar() {
 		return manager.createQuery("from Usuario", Usuario.class).getResultList();
 	}
-	
+
+	public Usuario getUsuarioPor(String login) {
+		return manager.createQuery("from Usuario u where u.login = :login and u.status = 'ATIVO'", Usuario.class).setParameter("login", login)
+				.getSingleResult();
+	}
+
 	public void salvarOuAtualizar(Usuario usuario) {
 		manager.merge(usuario);
 	}
-	
+
 	public Usuario getPorId(Long id) {
-		return manager.find(Usuario.class, id);	
+		return manager.find(Usuario.class, id);
 	}
-	
+
 	public void remover(Usuario usuario) {
 		usuario = getPorId(usuario.getId());
 		manager.remove(usuario);

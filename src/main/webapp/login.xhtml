@@ -5,6 +5,12 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:p="http://primefaces.org/ui">
+
+<f:metadata>
+	<f:viewParam name="dummy" />
+	<f:event listener="#{loginBean.preRender}" type="preRenderView" />
+</f:metadata>
+
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Login</title>
@@ -12,10 +18,6 @@
 	<h:outputStylesheet library="css" name="sistema.css" />
 </h:head>
 <h:body>
-	<!--     	<f:metadata> -->
-	<!--     		<f:viewParam name="dummy" /> -->
-	<!--     		<f:event listener="#{loginBean.preRender}" type="preRenderView" /> -->
-	<!--     	</f:metadata> -->
 
 	<center>
 		<div id="login-dialog">
@@ -23,17 +25,26 @@
 
 			<h:form id="frm" prependId="false">
 
-				<p:messages id="messages" autoUpdate="true" closable="true" />
+				<h:panelGrid columns="1" styleClass="grid-login">
 
-				<h:panelGrid columns="2" styleClass="grid-login">
-					<p:outputLabel value="E-mail" />
-					<p:inputText size="30" id="j_username" />
+					<p:messages id="messages" autoUpdate="true" closable="true" />
 
-					<p:outputLabel value="Senha" />
-					<p:password size="30" id="j_password" />
+					<h:panelGroup>
+						<p:outputLabel value="Login" /><br/>
+						<p:inputText size="30" id="username" placeholder="Digite seu login..."/>
+					</h:panelGroup>
 
-					<p:commandButton style="margin-top: 10px" value="Login" ajax="false" />
-					<p:link style="float: right" value="Cadastre-se" outcome="/meu-cadastro.xhtml"/>
+					<h:panelGroup>
+						<p:outputLabel value="Senha" /><br/>
+						<p:password size="30" id="password" placeholder="Digite sua senha..."/>
+					</h:panelGroup>
+
+					<h:panelGroup>
+						<p:commandButton style="margin-top: 10px" value="Login"
+							ajax="false" action="#{loginBean.acessar}" />
+						<p:link style="float: right; margin-top: 15px" value="Cadastre-se"
+							outcome="/meu-cadastro.xhtml" />
+					</h:panelGroup>
 				</h:panelGrid>
 			</h:form>
 		</div>
