@@ -1,0 +1,92 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:metadata>
+		<f:event listener="#{usuariosBean.buscarUsuarios}" type="preRenderView"/>
+	</f:metadata>
+
+	<ui:define name="titulo">Usuários</ui:define>
+
+	<ui:define name="conteudo">
+		<h1>Usuários</h1>
+		
+		<p:messages id="mensagens" closable="true" />
+
+		<h:form id="form-tabela" prependId="false">
+			<p:dataTable id="usuarios-tabela" value="#{usuariosBean.usuarios}" var="usuario"
+				emptyMessage="Nenhum registro encontrado.">
+	
+				<p:column headerText="Login">
+					<label>#{usuario.login}</label>
+				</p:column>
+	
+				<p:column headerText="Perfil" width="200" styleClass="center">
+					<label>#{usuario.perfil.descricao}</label>
+				</p:column>
+				
+				<p:column headerText="Status" width="200" styleClass="center">
+					<label>#{usuario.status.descricao}</label>
+				</p:column>
+	
+				<p:column width="100" styleClass="center">
+					<p:commandLink oncomplete="PF('dialogo-cadastro').show();" title="Editar"
+						process="@this" update="dialogo-cadastro" resetValues="dialogo-cadastro">
+						<i class="fa fa-pencil" />
+						<f:setPropertyActionListener value="#{usuario}" target="#{usuariosBean.usuario}" />
+					</p:commandLink>
+					<p:spacer width="15"/>
+					<p:commandLink action="#{usuariosBean.mudarStatus()}" style="text-decoration: none !important">
+						<i class="fa fa-info-circle" style="#{usuario.status eq 'ATIVO' ? 'color: green' : 'color: red'}"/>
+						<f:setPropertyActionListener value="#{usuario}" target="#{usuariosBean.usuario}" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+			
+			<br />
+		
+			<p:commandButton value="Adicionar" oncomplete="PF('dialogo-cadastro').show();"
+				process="@this" resetValues="dialogo-cadastro" update="dialogo-cadastro" 
+				icon="fa fa-plus-circle" action="#{usuariosBean.novoUsuario()}" />
+		</h:form>
+		
+		<p:dialog id="dialogo-cadastro" widgetVar="dialogo-cadastro"
+			header="Novo Usuário" modal="true" resizable="false"
+			width="400px">
+		
+			<h:form id="dialogo-cadastro-form" prependId="false">
+				<p:messages id="dialogo-msg" autoUpdate="false" closable="true" />
+			
+				<div class="ui-g ui-fluid">
+					<div class="ui-g-12">
+						<label class="control-label">Login</label>
+						<p:inputText value="#{usuariosBean.usuario.login}" maxlength="50" />
+					</div>
+					
+					<div class="ui-g-12">
+						<label class="control-label">Perfil</label>
+						<p:selectOneButton value="#{usuariosBean.usuario.perfil}">
+							<f:selectItems value="#{usuariosBean.perfis}" var="perfil"
+								itemLabel="#{perfil.descricao}" itemValue="#{perfil}" />
+						</p:selectOneButton>
+					</div>
+				</div>
+				
+				<div class="ui-g">
+					<div class="ui-g-12 right" style="margin-top:15px">
+						<p:commandButton value="Cancelar" oncomplete="PF('dialogo-cadastro').hide();"
+							update="@form" icon="fa fa-ban" process="@this" style="margin-right:5px" />
+
+						<p:commandButton value="Salvar" action="#{usuariosBean.salvar()}"
+							oncomplete="if(!args.validationFailed) PF('dialogo-cadastro').hide();"
+							update="@form" icon="fa fa-save" />
+					</div>
+				</div>
+			</h:form>
+		</p:dialog>
+		
+	</ui:define>
+</ui:composition>
