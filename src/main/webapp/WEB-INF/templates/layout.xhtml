@@ -25,6 +25,19 @@
 			<p:menuitem value="Sair" url="/logout" icon="fa fa-fw fa-sign-out" />
 		</p:menubar>
 	</h:form>
+
+	<header>
+		<h:form>
+			<p:menubar>
+				<p:menuitem value="Campeonatos" outcome="/campeonatos"
+					icon="ui-icon-plus" />
+				<p:menuitem value="Rodadas" outcome="/rodadas" icon="ui-icon-plus" />
+				<p:menuitem value="Partidas" outcome="/partidas" icon="ui-icon-plus" />
+				<p:menuitem value="Times" outcome="/times" icon="ui-icon-plus" />
+			</p:menubar>
+		</h:form>
+	</header>
+
 	<ui:insert name="conteudo">
 
 	</ui:insert>

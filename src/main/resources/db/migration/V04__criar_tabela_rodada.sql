@@ -1,0 +1,6 @@
+CREATE TABLE rodada (
+	id int PRIMARY KEY AUTO_INCREMENT,
+	numero int NOT NULL,
+	id_campeonato int NOT NULL,
+	CONSTRAINT FK_CAMPEONATO FOREIGN KEY (id_campeonato) REFERENCES campeonato(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -1,5 +1,7 @@
 package br.com.palpitecerto.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -11,8 +13,11 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+
 @Entity
-public class Usuario {
+public class Usuario implements Serializable {
+
+	private static final long serialVersionUID = 5870094586886573511L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

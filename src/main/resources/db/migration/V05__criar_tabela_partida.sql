@@ -1,0 +1,10 @@
+CREATE TABLE partida (
+	id int PRIMARY KEY AUTO_INCREMENT,
+	id_mandante int NOT NULL,
+	id_visitante int NOT NULL,
+	id_rodada int NOT NULL,
+	resultado VARCHAR(20) NOT NULL,
+	CONSTRAINT FK_MANDANTE FOREIGN KEY (id_mandante) REFERENCES time(id),
+	CONSTRAINT FK_VISITANTE FOREIGN KEY (id_visitante) REFERENCES time(id),
+	CONSTRAINT FK_RODADA_PARTIDA FOREIGN KEY (id_rodada) REFERENCES rodada(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
