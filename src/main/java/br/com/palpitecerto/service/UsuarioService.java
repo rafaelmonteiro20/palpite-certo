@@ -7,7 +7,6 @@ import javax.inject.Inject;
 
 import br.com.palpitecerto.dao.UsuarioDAO;
 import br.com.palpitecerto.infra.jpa.Transactional;
-import br.com.palpitecerto.model.Status;
 import br.com.palpitecerto.model.Usuario;
 import br.com.palpitecerto.security.Criptografia;
 
@@ -31,7 +30,7 @@ public class UsuarioService implements Serializable {
 		if (usuario.getSenha() == null || usuario.getSenha().isEmpty())
 			usuario.setSenha("123");
 
-		if(usuario.getId() == null)
+		if(usuario.isNovo())
 			usuario.setSenha(Criptografia.criptografar(usuario.getSenha()));
 		
 		usuarioDAO.salvarOuAtualizar(usuario);
@@ -39,11 +38,7 @@ public class UsuarioService implements Serializable {
 
 	@Transactional
 	public void mudarStatus(Usuario usuario) {
-		if (usuario.getStatus().equals(Status.ATIVO))
-			usuario.setStatus(Status.INATIVO);
-		else
-			usuario.setStatus(Status.ATIVO);
-
+		usuario.mudarStatus();
 		usuarioDAO.salvarOuAtualizar(usuario);
 	}
 
@@ -54,4 +49,5 @@ public class UsuarioService implements Serializable {
 	public void remover(Usuario usuario) {
 		usuarioDAO.remover(usuario);
 	}
+	
 }

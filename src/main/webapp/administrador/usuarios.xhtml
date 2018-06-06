@@ -29,7 +29,7 @@
 				</p:column>
 				
 				<p:column headerText="Status" width="200" styleClass="center">
-					<label>#{usuario.status.descricao}</label>
+					<label>#{usuario.ativo ? 'Ativo' : 'Inativo'}</label>
 				</p:column>
 	
 				<p:column width="100" styleClass="center">
@@ -40,7 +40,7 @@
 					</p:commandLink>
 					<p:spacer width="15"/>
 					<p:commandLink action="#{usuariosBean.mudarStatus()}" style="text-decoration: none !important">
-						<i class="fa fa-info-circle" style="#{usuario.status eq 'ATIVO' ? 'color: green' : 'color: red'}"/>
+						<i class="fa fa-info-circle" style="#{usuario.ativo ? 'color: green' : 'color: red'}"/>
 						<f:setPropertyActionListener value="#{usuario}" target="#{usuariosBean.usuario}" />
 					</p:commandLink>
 				</p:column>

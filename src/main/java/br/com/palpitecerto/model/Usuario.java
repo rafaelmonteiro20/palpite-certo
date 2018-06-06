@@ -13,7 +13,6 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-
 @Entity
 public class Usuario implements Serializable {
 
@@ -34,9 +33,7 @@ public class Usuario implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private Perfil perfil = Perfil.JOGADOR;
 
-	@NotNull
-	@Enumerated(EnumType.STRING)
-	private Status status = Status.ATIVO;
+	private boolean ativo = true;
 
 	public Long getId() {
 		return id;
@@ -70,12 +67,24 @@ public class Usuario implements Serializable {
 		this.perfil = perfil;
 	}
 
-	public Status getStatus() {
-		return status;
+	public boolean isAtivo() {
+		return ativo;
 	}
-
-	public void setStatus(Status status) {
-		this.status = status;
+	
+	public boolean isInativo() {
+		return !ativo;
+	}
+	
+	public void mudarStatus() {
+		this.ativo = !ativo;
+	}
+	
+	public boolean isAdministrador() {
+		return perfil == Perfil.ADMINISTRADOR;
+	}
+	
+	public boolean isNovo() {
+		return id == null;
 	}
 
 	@Override

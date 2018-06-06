@@ -20,7 +20,8 @@ public class UsuarioDAO implements Serializable {
 	}
 
 	public Usuario getUsuarioPor(String login) {
-		return manager.createQuery("from Usuario u where u.login = :login and u.status = 'ATIVO'", Usuario.class).setParameter("login", login)
+		return manager.createQuery("from Usuario u where u.login = :login and u.ativo = true", Usuario.class)
+				.setParameter("login", login)
 				.getSingleResult();
 	}
 
