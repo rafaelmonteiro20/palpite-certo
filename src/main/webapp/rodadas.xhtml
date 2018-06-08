@@ -28,36 +28,27 @@
 			<p:accordionPanel id="rodadas-tabela" value="#{rodadasBean.rodadas}"
 				var="rodada">
 				<p:tab title="#{rodada.numero}ª rodada">
+					<h:panelGroup rendered="#{rodada.encerrada}" layout="block"
+						styleClass="container-encerrada">
+						<p:outputLabel value="RODADA ENCERRADA"
+							styleClass="right encerrada" />
+					</h:panelGroup>
+
+					<div style="style: clear: both"></div>
+
 					<p:dataTable value="#{rodadasBean.getPartidasPorRodada(rodada)}"
 						var="partida" emptyMessage="Nenhum registro encontrado.">
 
 						<p:column headerText="Mandante" styleClass="center">
-							<p:outputLabel
-								rendered="#{partida.resultado eq 'EMPATE' or partida.resultado eq null}"
-								value="#{partida.mandante}" />
-							<p:outputLabel
-								rendered="#{partida.resultado ne 'EMPATE' and partida.resultado ne null}"
-								styleClass="#{partida.vencedor eq partida.mandante ? 'vencedor' : 'perdedor'}"
-								value="#{partida.mandante}" />
+							<p:outputLabel value="#{partida.mandante}" />
 						</p:column>
 
 						<p:column headerText="Visitante" styleClass="center">
-							<p:outputLabel
-								rendered="#{partida.resultado eq 'EMPATE' or partida.resultado eq null}"
-								value="#{partida.visitante}" />
-							<p:outputLabel
-								rendered="#{partida.resultado ne 'EMPATE' and partida.resultado ne null}"
-								styleClass="#{partida.vencedor eq partida.visitante ? 'vencedor' : 'perdedor'}"
-								value="#{partida.visitante}" />
-						</p:column>
-
-						<p:column headerText="Resultado" styleClass="center">
-							<label class="#{partida.resultado eq 'EMPATE' ? 'empate' : ''}">#{partida.resultado
-								eq null ? '-' : partida.resultado.descricao}</label>
+							<p:outputLabel value="#{partida.visitante}" />
 						</p:column>
 
 						<p:column width="100" styleClass="center" headerText="Editar">
-							<p:commandLink
+							<p:commandLink disabled="#{rodada.encerrada}"
 								oncomplete="PF('dialogo-cadastro-partida').show();"
 								title="Editar partida" process="@this"
 								update="dialogo-cadastro-partida">
@@ -164,50 +155,39 @@
 							rendered="#{not rodadasBean.partida.nova}"
 							value="#{rodadasBean.rodada.numero}" />
 
-						<p:selectOneMenu id="select-rodada" converter="rodadaConverter"
+						<p:selectOneMenu id="select-rodada"
 							rendered="#{rodadasBean.partida.nova}"
-							value="#{rodadasBean.rodada}">
+							converter="rodadaConverter" value="#{rodadasBean.rodada}">
 							<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
 							<f:selectItems value="#{rodadasBean.rodadas}" var="rodada"
-								itemLabel="#{rodada.numero}ª" itemValue="#{rodada}" />
+								itemLabel="#{rodada.numero}ª rodada" itemValue="#{rodada}" />
 						</p:selectOneMenu>
 					</div>
 
 					<div class="ui-g-12">
 						<label class="control-label">Mandante</label>
-						<p:selectOneMenu id="id-mandante" value="#{rodadasBean.partida.mandante}"
-							converter="timeConverter">
+						<p:selectOneMenu id="select-mandante"
+							value="#{rodadasBean.partida.mandante}" converter="timeConverter">
 							<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
 							<f:selectItems value="#{rodadasBean.times}" var="time"
 								itemLabel="#{time.nome}" itemValue="#{time}"
 								itemDisabled="#{time eq rodadasBean.partida.visitante}" />
-							<p:ajax event="change" update="id-visitante" />
+							<p:ajax update="select-visitante" />
 						</p:selectOneMenu>
 					</div>
 
 					<div class="ui-g-12">
 						<label class="control-label">Visitante</label>
-						<p:selectOneMenu id="id-visitante" value="#{rodadasBean.partida.visitante}"
+						<p:selectOneMenu id="select-visitante"
+							value="#{rodadasBean.partida.visitante}"
 							converter="timeConverter">
 							<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
 							<f:selectItems value="#{rodadasBean.times}" var="time"
 								itemLabel="#{time.nome}" itemValue="#{time}"
 								itemDisabled="#{time eq rodadasBean.partida.mandante}" />
-							<p:ajax event="change" update="id-mandante" />
+							<p:ajax update="select-mandante" />
 						</p:selectOneMenu>
 					</div>
-
-					<h:panelGroup rendered="#{not rodadasBean.partida.nova}"
-						layout="block" styleClass="ui-g-12">
-						<label class="control-label">Resultado</label>
-						<p:selectOneMenu
-							value="#{rodadasBean.partida.resultado}"
-							converter="resultadoConverter">
-							<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
-							<f:selectItems value="#{rodadasBean.resultados}" var="res"
-								itemLabel="#{res.descricao}" itemValue="#{res}" />
-						</p:selectOneMenu>
-					</h:panelGroup>
 				</div>
 
 				<div class="ui-g">

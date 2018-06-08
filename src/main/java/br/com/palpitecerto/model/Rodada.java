@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -16,6 +17,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "rodada")
@@ -39,11 +42,15 @@ public class Rodada implements Serializable {
 	@JoinTable(name = "rodada_partida", joinColumns = @JoinColumn(name = "id_rodada"), inverseJoinColumns = @JoinColumn(name = "id_partida"))
 	private List<Partida> partidas;
 
+	@Type(type = "true_false")
+	@Column(name = "is_encerrada")
+	private boolean encerrada;
+
 	public void addPartida(Partida partida) {
 		if (!partidas.contains(partida))
 			partidas.add(partida);
 	}
-	
+
 	public void updatePartida(Partida partida) {
 		partidas.remove(partida);
 		partidas.add(partida);
@@ -51,6 +58,10 @@ public class Rodada implements Serializable {
 
 	public boolean isNova() {
 		return id == null;
+	}
+	
+	public boolean isValendo() {
+		return !encerrada;
 	}
 
 	public Long getId() {
@@ -83,6 +94,14 @@ public class Rodada implements Serializable {
 
 	public void setPartidas(List<Partida> partidas) {
 		this.partidas = partidas;
+	}
+
+	public boolean isEncerrada() {
+		return encerrada;
+	}
+
+	public void setEncerrada(boolean encerrada) {
+		this.encerrada = encerrada;
 	}
 
 	@Override

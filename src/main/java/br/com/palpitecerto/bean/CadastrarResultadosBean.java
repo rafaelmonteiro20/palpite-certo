@@ -8,6 +8,7 @@ import javax.faces.bean.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import br.com.palpitecerto.dao.filter.PartidaFilter;
 import br.com.palpitecerto.infra.jsf.FacesUtil;
 import br.com.palpitecerto.model.Campeonato;
 import br.com.palpitecerto.model.Partida;
@@ -15,13 +16,14 @@ import br.com.palpitecerto.model.Resultado;
 import br.com.palpitecerto.model.Rodada;
 import br.com.palpitecerto.model.Time;
 import br.com.palpitecerto.service.CampeonatoService;
+import br.com.palpitecerto.service.PartidaService;
 import br.com.palpitecerto.service.RodadaService;
 import br.com.palpitecerto.service.TimeService;
 import br.com.palpitecerto.service.exception.RegistroExistenteException;
 
 @Named
 @ViewScoped
-public class RodadasBean implements Serializable {
+public class CadastrarResultadosBean implements Serializable {
 
 	/**
 	 * 
@@ -40,109 +42,88 @@ public class RodadasBean implements Serializable {
 	@Inject
 	private TimeService timeService;
 
+	@Inject
+	private PartidaService partidaService;
+
 	private List<Time> times;
 
-	private Campeonato campeonato;
 	private List<Campeonato> campeonatos;
 
-	private Rodada rodada;
 	private List<Rodada> rodadas;
 
-	private Integer ultimaRodada;
+	private List<Partida> partidas;
+
+	private PartidaFilter filter;
 
 	private Partida partida;
 
 	@PostConstruct
 	public void init() {
+		filter = new PartidaFilter();
 		campeonatos = campeonatoService.listar();
 		times = timeService.listar();
-		novaPartida();
-		novaRodada();
 	}
 
 	public void salvar() {
 		try {
-			if (rodada.isNova())
-				rodada.setNumero(++ultimaRodada);
-			rodadaService.salvar(rodada);
+			partidaService.salvar(partida);
 			atualizarRodadas();
-			facesUtil.addInfoMessage("Partida salva com sucesso.");
-			facesUtil.updateComponents("mensagens", "rodadas-tabela", "partidas-tabela");
+			facesUtil.addInfoMessage("Resultado salvo com sucesso.");
+			facesUtil.updateComponents("mensagens", "partidas-tabela");
 		} catch (RegistroExistenteException e) {
 			facesUtil.validationFailed(e.getMessage());
 		}
-	}
-
-	public void novaRodada() {
-		rodada = new Rodada();
-	}
-
-	public void novaPartida() {
-		partida = new Partida();
-	}
-
-	public void salvarPartida() {
-		try {
-			if (partida.isNova()) {
-				rodada.addPartida(partida);
-			} else {
-				rodada.updatePartida(partida);
-			}
-			rodadaService.salvar(rodada);
-			atualizarRodadas();
-			facesUtil.addInfoMessage("Rodada salva com sucesso.");
-			facesUtil.updateComponents("mensagens", "rodadas-tabela");
-		} catch (RegistroExistenteException e) {
-			facesUtil.validationFailed(e.getMessage());
-		}
-	}
-
-	public void buscarUltimaRodada() {
-		ultimaRodada = rodadaService.buscarUltimaRodadaCadastrada(rodada.getCampeonato());
 	}
 
 	public void atualizarRodadas() {
-		rodadas = rodadaService.buscarPorCampeonato(campeonato);
-	}
-	
-	public void resetUltimaRodada() {
-		ultimaRodada = null;
-	}
-	
-	public List<Partida> getPartidasPorRodada(Rodada rodada) {
-		return rodadaService.buscarPartidasPorRodada(rodada);
+		rodadas = rodadaService.buscarPorCampeonato(filter.getCampeonato());
 	}
 
-	public Rodada getRodada() {
-		return rodada;
+	public void atualizarPartidas() {
+		partidas = rodadaService.buscarPartidasPorRodada(filter.getRodada());
+	}
+	
+	public boolean exibirEncerrar() {
+		if(partidas == null)
+			return false;
+		return !partidas.stream().anyMatch(p -> p.getResultado() == null);
+	}
+	
+	public boolean desabilitarEncerrar() {
+		return filter.getRodada().isEncerrada() || partidas.size() == 0;
 	}
 
-	public void setRodada(Rodada rodada) {
-		this.rodada = rodada;
+	public void encerrarRodada() {
+		try {
+			Rodada rodada = filter.getRodada();
+			rodada.setEncerrada(true);
+			rodadaService.salvar(rodada);
+			atualizarRodadas();
+			facesUtil.addInfoMessage("Rodada encerrada com sucesso.");
+			facesUtil.updateComponents("mensagens", "partidas-tabela");
+		} catch (RegistroExistenteException e) {
+			facesUtil.validationFailed(e.getMessage());
+		}
+	}
+
+	public PartidaFilter getFilter() {
+		return filter;
+	}
+
+	public void setFilter(PartidaFilter filter) {
+		this.filter = filter;
+	}
+
+	public List<Partida> getPartidas() {
+		return partidas;
 	}
 
 	public List<Rodada> getRodadas() {
 		return rodadas;
 	}
 
-	public Campeonato getCampeonato() {
-		return campeonato;
-	}
-
-	public void setCampeonato(Campeonato campeonato) {
-		this.campeonato = campeonato;
-	}
-
 	public List<Campeonato> getCampeonatos() {
 		return campeonatos;
-	}
-
-	public Integer getUltimaRodada() {
-		return ultimaRodada;
-	}
-
-	public void setUltimaRodada(Integer ultimaRodada) {
-		this.ultimaRodada = ultimaRodada;
 	}
 
 	public Partida getPartida() {
