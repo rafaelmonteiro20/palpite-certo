@@ -175,25 +175,25 @@
 
 					<div class="ui-g-12">
 						<label class="control-label">Mandante</label>
-						<p:selectOneMenu value="#{rodadasBean.partida.mandante}"
+						<p:selectOneMenu id="id-mandante" value="#{rodadasBean.partida.mandante}"
 							converter="timeConverter">
 							<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
 							<f:selectItems value="#{rodadasBean.times}" var="time"
 								itemLabel="#{time.nome}" itemValue="#{time}"
 								itemDisabled="#{time eq rodadasBean.partida.visitante}" />
-							<f:ajax render="@form" />
+							<p:ajax event="change" update="id-visitante" />
 						</p:selectOneMenu>
 					</div>
 
 					<div class="ui-g-12">
 						<label class="control-label">Visitante</label>
-						<p:selectOneMenu value="#{rodadasBean.partida.visitante}"
+						<p:selectOneMenu id="id-visitante" value="#{rodadasBean.partida.visitante}"
 							converter="timeConverter">
 							<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
 							<f:selectItems value="#{rodadasBean.times}" var="time"
 								itemLabel="#{time.nome}" itemValue="#{time}"
 								itemDisabled="#{time eq rodadasBean.partida.mandante}" />
-							<f:ajax render="@form" />
+							<p:ajax event="change" update="id-mandante" />
 						</p:selectOneMenu>
 					</div>
 

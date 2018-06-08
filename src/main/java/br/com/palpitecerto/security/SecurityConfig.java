@@ -48,6 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/login.xhtml", "/javax.faces.resource/**", "/meu-cadastro.xhtml").permitAll()
 				.antMatchers("/home.xhtml", "/acesso-negado.xhtml", "/pagina-nao-encontrada.xhtml").authenticated()
 				.antMatchers("/administrador/**", "/campeonatos.xhtml", "/rodadas.xhtml", "/times.xhtml").hasAnyRole("ADMINISTRADOR")
+				.antMatchers("/palpites.xhtml").hasAnyRole("JOGADOR")
+				.antMatchers("/lista-palpites.xhtml").hasAnyRole("ADMINISTRADOR", "JOGADOR")
 				.and()
 
 			.formLogin()

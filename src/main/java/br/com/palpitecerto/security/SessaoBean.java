@@ -57,5 +57,9 @@ public class SessaoBean implements Serializable {
 	public boolean isAdministrador() {
 		return hasRole("ADMINISTRADOR");
 	}
+	
+	public boolean isJogador() {
+		return hasRole("JOGADOR");
+	}
 
 }

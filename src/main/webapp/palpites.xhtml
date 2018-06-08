@@ -1,0 +1,83 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Palpite</ui:define>
+
+	<ui:define name="conteudo">
+		<h1>Palpite</h1>
+
+		<p:messages id="mensagens" closable="true" />
+
+		<h:form id="form-tabela" prependId="false">
+			<h:panelGrid columns="2" cellpadding="15">
+				<h:panelGroup>
+					<strong><label class="control-label">Campeonato:</label></strong>
+					<p:selectOneMenu value="#{palpitesBean.campeonatoSelecionado}"
+						converter="campeonatoConverter">
+						<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
+						<f:selectItems value="#{palpitesBean.campeonatos}" var="camp"
+							itemLabel="#{camp.nome} - #{camp.periodo}" itemValue="#{camp}" />
+						<p:ajax listener="#{palpitesBean.buscarRodadas()}"
+							update="id-rodadas" />
+					</p:selectOneMenu>
+				</h:panelGroup>
+
+				<h:panelGroup>
+					<strong><label class="control-label">Rodada:</label></strong>
+					<p:selectOneMenu id="id-rodadas"
+						value="#{palpitesBean.rodadaSelecionada}"
+						converter="rodadaConverter">
+						<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
+						<f:selectItems value="#{palpitesBean.rodadas}" var="rodada"
+							itemLabel="#{rodada.numero}ª rodada" itemValue="#{rodada}" />
+						<p:ajax process="@form" update="tabela" />
+					</p:selectOneMenu>
+				</h:panelGroup>
+			</h:panelGrid>
+			<hr />
+
+			<p:dataTable id="tabela"
+				value="#{palpitesBean.rodadaSelecionada.partidas}" var="partida"
+				emptyMessage="Nenhuma partida encontrada.">
+				<p:column headerText="Mandante">
+					#{partida.mandante}
+				</p:column>
+
+				<p:column headerText="Visitante">
+					#{partida.visitante}
+				</p:column>
+
+				<p:column headerText="Resultado" width="150" style="text-align: center">
+					<p:commandButton update="dialogo-resultado"
+						oncomplete="PF('dialogo-resultado').show()" value="Resultado">
+						<f:setPropertyActionListener value="#{partida}"
+							target="#{palpitesBean.partida}" />
+						<p:resetInput target="dialogo-resultado"/>
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+
+			<br />
+
+			<p:dialog id="dialogo-resultado" widgetVar="dialogo-resultado"
+				header="#{palpitesBean.partida.mandante} X #{palpitesBean.partida.visitante}">
+
+				<p:selectOneMenu value="#{palpitesBean.resultadoSelecionado}">
+					<f:selectItems value="#{palpitesBean.resultados}" var="resultado"
+						itemLabel="#{resultado.descricao}" itemValue="#{resultado}" />
+				</p:selectOneMenu>
+				
+				<br/><br/>
+				
+				<p:commandButton value="Salvar" action="#{palpitesBean.salvar}"
+				oncomplete="if(!args.validationFailed) PF('dialogo-resultado').hide();"/>
+				
+			</p:dialog>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

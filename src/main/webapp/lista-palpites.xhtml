@@ -1,0 +1,63 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Palpites</ui:define>
+
+	<ui:define name="conteudo">
+		<h1>Palpites</h1>
+
+		<h:form id="form-tabela" prependId="false">
+			<h:panelGrid columns="2" cellpadding="15">
+				<h:panelGroup>
+					<strong><label class="control-label">Campeonato:</label></strong>
+					<p:selectOneMenu value="#{palpitesBean.campeonatoSelecionado}"
+						converter="campeonatoConverter">
+						<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
+						<f:selectItems value="#{palpitesBean.campeonatos}" var="camp"
+							itemLabel="#{camp.nome} - #{camp.periodo}" itemValue="#{camp}" />
+						<p:ajax listener="#{palpitesBean.buscarRodadas()}"
+							update="id-rodadas" />
+					</p:selectOneMenu>
+				</h:panelGroup>
+
+				<h:panelGroup>
+					<strong><label class="control-label">Rodada:</label></strong>
+					<p:selectOneMenu id="id-rodadas"
+						value="#{palpitesBean.rodadaSelecionada}"
+						converter="rodadaConverter">
+						<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
+						<f:selectItems value="#{palpitesBean.rodadas}" var="rodada"
+							itemLabel="#{rodada.numero}ª rodada" itemValue="#{rodada}" />
+						<p:ajax process="@form" listener="#{palpitesBean.buscarPalpites}" update="tabela" />
+					</p:selectOneMenu>
+				</h:panelGroup>
+			</h:panelGrid>
+			<hr />
+
+			<p:dataTable id="tabela"
+				value="#{palpitesBean.palpites}" var="palpite"
+				emptyMessage="Nenhum palpite encontrado.">
+				<p:column headerText="Jogador">
+					#{palpite.jogador.login}
+				</p:column>
+
+				<p:column headerText="Mandante">
+					#{palpite.partida.mandante}
+				</p:column>
+				
+				<p:column headerText="Visitante">
+					#{palpite.partida.visitante}
+				</p:column>
+
+				<p:column headerText="Resultado" width="150" style="text-align: center">
+					#{palpite.resultado.descricao}
+				</p:column>
+			</p:dataTable>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

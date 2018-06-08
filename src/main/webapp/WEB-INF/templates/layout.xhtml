@@ -24,6 +24,12 @@
 					icon="ui-icon-plus" rendered="#{sessaoBean.administrador}"/>
 				<p:menuitem value="Rodadas" outcome="/rodadas" icon="ui-icon-plus" rendered="#{sessaoBean.administrador}"/>
 				<p:menuitem value="Times" outcome="/times" icon="ui-icon-plus" rendered="#{sessaoBean.administrador}"/>
+				
+				<p:submenu label="Palpites">
+					<p:menuitem value="Salvar" outcome="/palpites" icon="ui-icon-plus" rendered="#{sessaoBean.jogador}"/>
+					<p:menuitem value="Visualizar" outcome="/lista-palpites"/>
+				</p:submenu>
+				
 				<p:menuitem value="Sair" url="/logout" icon="fa fa-fw fa-sign-out" />
 			</p:menubar>
 		</h:form>
