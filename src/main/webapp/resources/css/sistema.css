@@ -2,23 +2,29 @@
 	display: block;
 	margin-bottom: 5px;
 }
+
 .riquired::after {
 	content: ' *';
 	color: red;
 }
+
 .center {
 	text-align: center;
 }
+
 .right {
 	text-align: right;
 }
+
 .left {
 	text-align: left;
 }
+
 .action-icon {
 	text-decoration: none !important;
 	margin-left: 5px;
 }
+
 .grid-login {
 	background-color: #f2f2f2;
 	border-radius: 8px;
@@ -43,6 +49,33 @@
 
 .label-bold {
 	font-weight: bold;
+}
+
+.container-encerrada {
+	display: flex;
+	flex-orientation: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	justify-content: flex-end;
+	margin-bottom: 5px;
+}
+
+.encerrada {
+	background: red;
+	color: white;
+	font-size: 10px;
+	font-weight: bold;
+	text-align: right;
+	border-radius: 4px;
+	padding: 5px;
+}
+
+.ui-datatable-header {
+	display: flex;
+	flex-orientation: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	justify-content: flex-end;
 }
 
 /* ##### COMPONENTES ##### */

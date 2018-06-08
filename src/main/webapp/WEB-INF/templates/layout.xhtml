@@ -21,9 +21,14 @@
 				<p:menuitem value="Usuários" outcome="/administrador/usuarios"
 					rendered="#{sessaoBean.administrador}" icon="fa fa-fw fa-users" />
 				<p:menuitem value="Campeonatos" outcome="/campeonatos"
-					icon="ui-icon-plus" rendered="#{sessaoBean.administrador}"/>
-				<p:menuitem value="Rodadas" outcome="/rodadas" icon="ui-icon-plus" rendered="#{sessaoBean.administrador}"/>
-				<p:menuitem value="Times" outcome="/times" icon="ui-icon-plus" rendered="#{sessaoBean.administrador}"/>
+					icon="ui-icon-plus" rendered="#{sessaoBean.administrador}" />
+				<p:menuitem value="Rodadas" outcome="/rodadas" icon="ui-icon-plus"
+					rendered="#{sessaoBean.administrador}" />
+				<p:menuitem value="Times" outcome="/times" icon="ui-icon-plus"
+					rendered="#{sessaoBean.administrador}" />
+				<p:menuitem value="Cadastrar Resultados"
+					outcome="/cadastrar-resultados" icon="ui-icon-check"
+					rendered="#{sessaoBean.administrador}" />
 				<p:menuitem value="Sair" url="/logout" icon="fa fa-fw fa-sign-out" />
 			</p:menubar>
 		</h:form>
