@@ -30,15 +30,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		
+		JsfLoginUrlAuthenticationEntryPoint jsfLoginEntry = new JsfLoginUrlAuthenticationEntryPoint();
+		jsfLoginEntry.setLoginFormUrl("/login.xhtml");
+		jsfLoginEntry.setRedirectStrategy(new JsfRedirectStrategy());
+		
+		JsfAccessDeniedHandler jsfDeniedEntry = new JsfAccessDeniedHandler();
+		jsfDeniedEntry.setLoginPath("/acesso-negado.xhtml");
+		jsfDeniedEntry.setContextRelative(true);
+		
 		http
 			.csrf().disable()
 			.headers().frameOptions().sameOrigin()
 			.and()
 
 			.authorizeRequests()
-				.antMatchers("/login.xhtml", "/javax.faces.resource/**").permitAll()
-				.antMatchers("/home.xhtml", "times.xhtml").authenticated()
-				.antMatchers("/administrador/**").hasAnyRole("ADMINISTRADOR")
+				.antMatchers("/login.xhtml", "/javax.faces.resource/**", "/meu-cadastro.xhtml").permitAll()
+				.antMatchers("/home.xhtml", "/acesso-negado.xhtml", "/pagina-nao-encontrada.xhtml").authenticated()
+				.antMatchers("/administrador/**", "/campeonatos.xhtml", "/partidas.xhtml", "/rodadas.xhtml", "/times.xhtml").hasAnyRole("ADMINISTRADOR")
 				.and()
 
 			.formLogin()
@@ -52,6 +61,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.and()
 
 			.exceptionHandling()
-				.accessDeniedPage("/login.xhtml");
+				.accessDeniedPage("/acesso-negado.xhtml")
+				.authenticationEntryPoint(jsfLoginEntry)
+				.accessDeniedHandler(jsfDeniedEntry);
 	}
 }

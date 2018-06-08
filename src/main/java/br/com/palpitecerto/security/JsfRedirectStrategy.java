@@ -16,37 +16,51 @@
 
 package br.com.palpitecerto.security;
 
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.web.access.AccessDeniedHandler;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.util.UrlUtils;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * This class represents...
+ * This class extends the default redirect strategy provided by
+ * Spring Security 3.1m2
  *
- * @author Ben Simpson <ben.simpson@icesoft.com>
- *         Date: 2/28/11
- *         Time: 5:35 PM
+ * @author Ben Simpson <ben.simpson@icesoft.com.com>
+ *         Date: 2/9/11
+ *         Time: 2:51 PM
  */
-public class JsfAccessDeniedHandler implements AccessDeniedHandler {
+public class JsfRedirectStrategy implements RedirectStrategy {
 
-    private String loginPath;
-    
+    protected final Log logger = LogFactory.getLog(getClass());
+
     private boolean contextRelative;
 
-    public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-        String redirectUrl = calculateRedirectUrl(request.getContextPath(), loginPath);
+
+    /**
+     * Redirects the response to the supplied URL.
+     * <p>
+     * If <tt>contextRelative</tt> is set, the redirect value will be the value after the request context path. Note
+     * that this will result in the loss of protocol information (HTTP or HTTPS), so will cause problems if a
+     * redirect is being performed to change to HTTPS, for example.
+     */
+    public void sendRedirect(HttpServletRequest request, HttpServletResponse response, String url) throws IOException {
+        String redirectUrl = calculateRedirectUrl(request.getContextPath(), url);
         redirectUrl = response.encodeRedirectURL(redirectUrl);
+
+        if (logger.isDebugEnabled()) {
+            logger.debug("Redirecting to '" + redirectUrl + "'");
+        }
 
         //we should redirect using ajax response if the case warrants
         boolean ajaxRedirect = request.getHeader("faces-request") != null
                 && request.getHeader("faces-request").toLowerCase().indexOf("ajax") > -1;
 
-        if(ajaxRedirect) {
+        if (ajaxRedirect) {
             //javax.faces.context.FacesContext ctxt = javax.faces.context.FacesContext.getCurrentInstance();
             //ctxt.getExternalContext().redirect(redirectUrl);
 
@@ -57,11 +71,13 @@ public class JsfAccessDeniedHandler implements AccessDeniedHandler {
         } else {
             response.sendRedirect(redirectUrl);
         }
+
+
     }
 
     private String calculateRedirectUrl(String contextPath, String url) {
         if (!UrlUtils.isAbsoluteUrl(url)) {
-            if (!contextRelative) {
+            if (contextRelative) {
                 return url;
             } else {
                 return contextPath + url;
@@ -92,13 +108,4 @@ public class JsfAccessDeniedHandler implements AccessDeniedHandler {
     public void setContextRelative(boolean useRelativeContext) {
         this.contextRelative = useRelativeContext;
     }
-
-    public String getLoginPath() {
-        return loginPath;
-    }
-
-    public void setLoginPath(String loginPath) {
-        this.loginPath = loginPath;
-    }
-    
 }

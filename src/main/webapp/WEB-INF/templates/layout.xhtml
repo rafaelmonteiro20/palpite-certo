@@ -14,26 +14,18 @@
 
 <h:body>
 	<!-- Header -->
-	<h:form>
-		<p:menubar>
-			<p:menuitem value="Usuários" url="/administrador/usuarios.xhtml"
-				rendered="#{sessaoBean.administrador}" icon="fa fa-fw fa-users" />
-				
-			<p:menuitem value="Times" url="/times.xhtml"
-				rendered="#{sessaoBean.administrador}" icon="fa fa-fw fa-flag" />
-				
-			<p:menuitem value="Sair" url="/logout" icon="fa fa-fw fa-sign-out" />
-		</p:menubar>
-	</h:form>
 
 	<header>
 		<h:form>
 			<p:menubar>
+				<p:menuitem value="Usuários" outcome="/administrador/usuarios"
+					rendered="#{sessaoBean.administrador}" icon="fa fa-fw fa-users" />
 				<p:menuitem value="Campeonatos" outcome="/campeonatos"
-					icon="ui-icon-plus" />
-				<p:menuitem value="Rodadas" outcome="/rodadas" icon="ui-icon-plus" />
-				<p:menuitem value="Partidas" outcome="/partidas" icon="ui-icon-plus" />
-				<p:menuitem value="Times" outcome="/times" icon="ui-icon-plus" />
+					icon="ui-icon-plus" rendered="#{sessaoBean.administrador}"/>
+				<p:menuitem value="Rodadas" outcome="/rodadas" icon="ui-icon-plus" rendered="#{sessaoBean.administrador}"/>
+				<p:menuitem value="Partidas" outcome="/partidas" icon="ui-icon-plus" rendered="#{sessaoBean.administrador}"/>
+				<p:menuitem value="Times" outcome="/times" icon="ui-icon-plus" rendered="#{sessaoBean.administrador}"/>
+				<p:menuitem value="Sair" url="/logout" icon="fa fa-fw fa-sign-out" />
 			</p:menubar>
 		</h:form>
 	</header>
