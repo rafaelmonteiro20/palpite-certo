@@ -1,0 +1,1 @@
+ALTER TABLE partida MODIFY resultado VARCHAR(20) NULL;

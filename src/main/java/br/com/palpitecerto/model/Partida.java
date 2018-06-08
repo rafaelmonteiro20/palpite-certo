@@ -33,13 +33,25 @@ public class Partida implements Serializable {
 	@JoinColumn(name = "id_visitante", nullable = false)
 	private Time visitante;
 
-	@NotNull
-	@ManyToOne
-	@JoinColumn(name = "id_rodada", nullable = false)
-	private Rodada rodada;
-
 	@Enumerated(EnumType.STRING)
 	private Resultado resultado;
+
+	public Time getVencedor() {
+		if(resultado == null)
+			return null;
+		switch (resultado) {
+		case VITORIA_MANDANTE:
+			return mandante;
+		case VITORIA_VISITANTE:
+			return visitante;
+		default:
+			return null;
+		}
+	}
+
+	public boolean isNova() {
+		return id == null;
+	}
 
 	public Long getId() {
 		return id;
@@ -63,14 +75,6 @@ public class Partida implements Serializable {
 
 	public void setVisitante(Time visitante) {
 		this.visitante = visitante;
-	}
-
-	public Rodada getRodada() {
-		return rodada;
-	}
-
-	public void setRodada(Rodada rodada) {
-		this.rodada = rodada;
 	}
 
 	public Resultado getResultado() {

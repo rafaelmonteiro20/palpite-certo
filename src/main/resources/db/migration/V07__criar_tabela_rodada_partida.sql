@@ -1,0 +1,9 @@
+ALTER TABLE partida DROP FOREIGN KEY FK_RODADA_PARTIDA;
+ALTER TABLE partida DROP COLUMN id_rodada;
+
+CREATE TABLE rodada_partida (
+	id_rodada int NOT NULL,
+	id_partida int NOT NULL,
+	CONSTRAINT FK_RODADA FOREIGN KEY (id_rodada) REFERENCES rodada(id),
+	CONSTRAINT FK_PARTIDA FOREIGN KEY (id_partida) REFERENCES partida(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

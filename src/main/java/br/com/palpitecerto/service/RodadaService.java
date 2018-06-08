@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import br.com.palpitecerto.dao.RodadaDao;
 import br.com.palpitecerto.infra.jpa.Transactional;
 import br.com.palpitecerto.model.Campeonato;
+import br.com.palpitecerto.model.Partida;
 import br.com.palpitecerto.model.Rodada;
 import br.com.palpitecerto.service.exception.RegistroExistenteException;
 
@@ -51,5 +52,13 @@ public class RodadaService implements Serializable {
 	
 	public List<Rodada> buscarPorCampeonato(Campeonato campeonato) {
 		return rodadaDao.buscarPorCampeonato(campeonato);
-	}	
+	}
+
+	public Integer buscarUltimaRodadaCadastrada(Campeonato campeonato) {
+		return rodadaDao.buscarUltimaRodadaCadastrada(campeonato);
+	}
+	
+	public List<Partida> buscarPartidasPorRodada(Rodada rodada) {
+		return rodadaDao.buscarPartidasPorRodada(rodada);
+	}
 }

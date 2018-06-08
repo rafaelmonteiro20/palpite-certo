@@ -26,3 +26,35 @@
 	margin-top: 8px;
 	padding: 10px
 }
+
+.vencedor {
+	color: green;
+	font-weight: bold;
+}
+
+.perdedor {
+	color: red;
+}
+
+.empate {
+	color: #eea236;
+	font-weight: bold;
+}
+
+.label-bold {
+	font-weight: bold;
+}
+
+/* ##### COMPONENTES ##### */
+
+/* LINKS */
+a.btn-close {
+	color: #007bff !important;
+	text-decoration: none;
+	background-color: transparent;
+	-webkit-text-decoration-skip: objects;
+}
+
+a.btn-close:hover {
+	color: #005cbf !important;
+}
