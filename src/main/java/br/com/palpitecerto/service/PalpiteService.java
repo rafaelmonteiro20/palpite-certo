@@ -6,6 +6,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import br.com.palpitecerto.dao.PalpiteDAO;
+import br.com.palpitecerto.dao.dto.RankingDTO;
+import br.com.palpitecerto.dao.filter.RankingFilter;
 import br.com.palpitecerto.infra.jpa.Transactional;
 import br.com.palpitecerto.model.Palpite;
 import br.com.palpitecerto.model.Partida;
@@ -50,5 +52,9 @@ public class PalpiteService implements Serializable {
 					palpiteDAO.salvar(p);
 			});
 		}
+	}
+	
+	public List<RankingDTO> buscarRanking(RankingFilter filter) {
+		return palpiteDAO.buscarRanking(filter);
 	}
 }
