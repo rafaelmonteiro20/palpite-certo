@@ -18,7 +18,7 @@
 						converter="campeonatoConverter">
 						<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
 						<f:selectItems value="#{rankingBean.campeonatos}" var="camp"
-							itemLabel="#{camp" itemValue="#{camp}" />
+							itemLabel="#{camp.nome}" itemValue="#{camp}" />
 						<p:ajax listener="#{rankingBean.buscarRodadas()}"
 							update="id-rodadas" />
 					</p:selectOneMenu>
@@ -26,8 +26,7 @@
 
 				<h:panelGroup>
 					<strong><label class="control-label">Rodada:</label></strong>
-					<p:selectOneMenu id="id-rodadas"
-						value="#{rankingBean.filter.rodada}"
+					<p:selectOneMenu id="id-rodadas" value="#{rankingBean.filter.rodada}"
 						converter="rodadaConverter">
 						<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
 						<f:selectItems value="#{rankingBean.rodadas}" var="rodada"
@@ -36,21 +35,23 @@
 					</p:selectOneMenu>
 				</h:panelGroup>
 			</h:panelGrid>
+			
 			<hr />
 
 			<p:dataTable id="tabela"
 				value="#{rankingBean.rankiados}" var="rank"
 				emptyMessage="Nenhum jogador encontrado.">
+				
+				<p:column headerText="#" styleClass="center" width="50">
+					
+				</p:column>
+				
 				<p:column headerText="Jogador">
-					#{rank.jogador.login}
+					#{rank.jogador}
 				</p:column>
 
 				<p:column headerText="Pontuaçao">
 					#{rank.pontuacao}
-				</p:column>
-
-				<p:column headerText="Resultado" width="150" style="text-align: center">
-					#{palpite.resultado.descricao}
 				</p:column>
 			</p:dataTable>
 		</h:form>

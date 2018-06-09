@@ -32,6 +32,8 @@
 				<p:submenu label="Palpites">
 					<p:menuitem value="Salvar" outcome="/palpites" icon="ui-icon-plus"
 						rendered="#{sessaoBean.jogador}" />
+					<p:menuitem value="Ranking" outcome="/ranking" icon="ui-icon-check"
+						rendered="#{sessaoBean.administrador}" />
 					<p:menuitem value="Visualizar" outcome="/lista-palpites" icon="ui-icon-check"/>
 				</p:submenu>
 

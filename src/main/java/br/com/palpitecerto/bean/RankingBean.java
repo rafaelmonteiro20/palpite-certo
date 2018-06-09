@@ -52,6 +52,7 @@ public class RankingBean implements Serializable {
 	public void init() {
 		filter = new RankingFilter();
 		campeonatos = campeonatoService.listar();
+		buscarRanking();
 	}
 
 	public void buscarRodadas() {
@@ -77,4 +78,9 @@ public class RankingBean implements Serializable {
 	public List<RankingDTO> getRankiados() {
 		return rankiados;
 	}
+	
+	public RankingFilter getFilter() {
+		return filter;
+	}
+	
 }

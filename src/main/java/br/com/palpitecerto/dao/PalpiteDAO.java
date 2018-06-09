@@ -1,22 +1,19 @@
 package br.com.palpitecerto.dao;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 
 import br.com.palpitecerto.dao.dto.RankingDTO;
 import br.com.palpitecerto.dao.filter.RankingFilter;
 import br.com.palpitecerto.model.Palpite;
 import br.com.palpitecerto.model.Rodada;
 import br.com.palpitecerto.model.Usuario;
+
 
 public class PalpiteDAO implements Serializable {
 
@@ -66,8 +63,10 @@ public class PalpiteDAO implements Serializable {
 		 * u.login ORDER BY acertos DESC;
 		 */
 		StringBuilder builder = new StringBuilder(
-				"SELECT NEW br.com.palpitecerto.dao.dto.RankingDTO(u, SUM(CASE WHEN p.palpiteCerto = 'T' THEN 1 ELSE 0 END))");
-		builder.append(" FROM palpite p INNER JOIN p.jogador u GROUP BY u ORDER BY 2 DESC;");
+				"SELECT NEW br.com.palpitecerto.dao.dto.RankingDTO(u.login, count(p))");
+		builder.append(" FROM Palpite p INNER JOIN p.jogador u");
+		builder.append(" WHERE p.palpiteCerto = true");
+		builder.append(" GROUP BY u.login ORDER BY 2 DESC");
 		return builder.toString();
 	}
 
