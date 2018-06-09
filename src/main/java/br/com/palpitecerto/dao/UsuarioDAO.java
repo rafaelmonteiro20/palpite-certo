@@ -5,7 +5,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
+import br.com.palpitecerto.dao.dto.RankingDTO;
+import br.com.palpitecerto.dao.filter.RankingFilter;
+import br.com.palpitecerto.model.Palpite;
 import br.com.palpitecerto.model.Usuario;
 
 public class UsuarioDAO implements Serializable {

@@ -1,0 +1,59 @@
+<ui:composition template="/WEB-INF/templates/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Ranking</ui:define>
+
+	<ui:define name="conteudo">
+		<h1>Ranking</h1>
+
+		<h:form id="form-tabela" prependId="false">
+			<h:panelGrid columns="2" cellpadding="15">
+				<h:panelGroup>
+					<strong><label class="control-label">Campeonato:</label></strong>
+					<p:selectOneMenu value="#{rankingBean.filter.campeonato}"
+						converter="campeonatoConverter">
+						<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
+						<f:selectItems value="#{rankingBean.campeonatos}" var="camp"
+							itemLabel="#{camp" itemValue="#{camp}" />
+						<p:ajax listener="#{rankingBean.buscarRodadas()}"
+							update="id-rodadas" />
+					</p:selectOneMenu>
+				</h:panelGroup>
+
+				<h:panelGroup>
+					<strong><label class="control-label">Rodada:</label></strong>
+					<p:selectOneMenu id="id-rodadas"
+						value="#{rankingBean.filter.rodada}"
+						converter="rodadaConverter">
+						<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
+						<f:selectItems value="#{rankingBean.rodadas}" var="rodada"
+							itemLabel="#{rodada.numero}ª rodada" itemValue="#{rodada}" />
+						<p:ajax process="@form" listener="#{rankingBean.buscarRanking()}" update="tabela" />
+					</p:selectOneMenu>
+				</h:panelGroup>
+			</h:panelGrid>
+			<hr />
+
+			<p:dataTable id="tabela"
+				value="#{rankingBean.rankiados}" var="rank"
+				emptyMessage="Nenhum jogador encontrado.">
+				<p:column headerText="Jogador">
+					#{rank.jogador.login}
+				</p:column>
+
+				<p:column headerText="Pontuaçao">
+					#{rank.pontuacao}
+				</p:column>
+
+				<p:column headerText="Resultado" width="150" style="text-align: center">
+					#{palpite.resultado.descricao}
+				</p:column>
+			</p:dataTable>
+		</h:form>
+
+	</ui:define>
+</ui:composition>

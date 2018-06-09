@@ -6,3 +6,5 @@
 /.project
 /.tern-project
 *.faces-config.xml.jsfdia
+src/main/resources/META-INF/persistence.xml
+src/main/java/br/com/palpitecerto/listener/ApplicationInitializer.java
