@@ -2,6 +2,7 @@ package br.com.palpitecerto.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -11,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "palpite")
@@ -36,6 +39,10 @@ public class Palpite implements Serializable {
 
 	@Enumerated(EnumType.STRING)
 	private Resultado resultado;
+
+	@Type(type = "true_false")
+	@Column(name = "is_palpite_certo")
+	private boolean palpiteCerto;
 
 	public Long getId() {
 		return id;
@@ -75,6 +82,14 @@ public class Palpite implements Serializable {
 
 	public void setResultado(Resultado resultado) {
 		this.resultado = resultado;
+	}
+
+	public boolean isPalpiteCerto() {
+		return palpiteCerto;
+	}
+
+	public void setPalpiteCerto(boolean palpiteCerto) {
+		this.palpiteCerto = palpiteCerto;
 	}
 
 	@Override

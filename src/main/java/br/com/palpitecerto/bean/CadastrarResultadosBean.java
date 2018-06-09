@@ -16,6 +16,7 @@ import br.com.palpitecerto.model.Resultado;
 import br.com.palpitecerto.model.Rodada;
 import br.com.palpitecerto.model.Time;
 import br.com.palpitecerto.service.CampeonatoService;
+import br.com.palpitecerto.service.PalpiteService;
 import br.com.palpitecerto.service.PartidaService;
 import br.com.palpitecerto.service.RodadaService;
 import br.com.palpitecerto.service.TimeService;
@@ -44,6 +45,9 @@ public class CadastrarResultadosBean implements Serializable {
 
 	@Inject
 	private PartidaService partidaService;
+
+	@Inject
+	private PalpiteService palpiteService;
 
 	private List<Time> times;
 
@@ -96,6 +100,7 @@ public class CadastrarResultadosBean implements Serializable {
 	public void encerrarRodada() {
 		try {
 			Rodada rodada = filter.getRodada();
+			palpiteService.validarPalpites(rodada);
 			rodada.setEncerrada(true);
 			rodadaService.salvar(rodada);
 			atualizarRodadas();
