@@ -85,6 +85,10 @@ public class Usuario implements Serializable {
 		return perfil == Perfil.ADMINISTRADOR;
 	}
 	
+	public boolean isJogador() {
+		return perfil == Perfil.JOGADOR;
+	}
+	
 	public boolean isNovo() {
 		return id == null;
 	}

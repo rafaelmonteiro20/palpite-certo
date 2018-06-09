@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
 
 import br.com.palpitecerto.dao.dto.RankingDTO;
 import br.com.palpitecerto.dao.filter.RankingFilter;
@@ -63,10 +61,9 @@ public class PalpiteDAO implements Serializable {
 		 * u.login ORDER BY acertos DESC;
 		 */
 		StringBuilder builder = new StringBuilder(
-				"SELECT NEW br.com.palpitecerto.dao.dto.RankingDTO(u.login, count(p))");
+				"SELECT NEW br.com.palpitecerto.dao.dto.RankingDTO(u.login, sum(case when p.palpiteCerto = true then 1 else 0 end))");
 		builder.append(" FROM Palpite p INNER JOIN p.jogador u");
-		builder.append(" WHERE p.palpiteCerto = true");
-		builder.append(" GROUP BY u.login ORDER BY 2 DESC");
+		builder.append(" GROUP BY u.login ORDER BY 2 DESC, 1 ASC");
 		return builder.toString();
 	}
 

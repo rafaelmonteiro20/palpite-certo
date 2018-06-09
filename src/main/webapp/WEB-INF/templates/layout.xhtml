@@ -17,6 +17,19 @@
 
 	<header>
 		<h:form>
+			
+			<p:ajaxStatus onstart="PF('dialogStatus').show();"
+				onsuccess="PF('dialogStatus').hide();" />
+
+			<p:dialog showHeader="false"
+				styleClass="retira-margem dialog-status-centro" modal="true"
+				widgetVar="dialogStatus" draggable="false" closable="false"
+				resizable="false">
+				<center>
+					<p:graphicImage library="images" name="loading.gif" width="45" />
+				</center>
+			</p:dialog>
+		
 			<p:menubar>
 				<p:menuitem value="Usuários" outcome="/administrador/usuarios"
 					rendered="#{sessaoBean.administrador}" icon="fa fa-fw fa-users" />
@@ -26,9 +39,14 @@
 					rendered="#{sessaoBean.administrador}" />
 				<p:menuitem value="Times" outcome="/times" icon="ui-icon-plus"
 					rendered="#{sessaoBean.administrador}" />
-				<p:menuitem value="Cadastrar Resultados"
-					outcome="/cadastrar-resultados" icon="ui-icon-check"
-					rendered="#{sessaoBean.administrador}" />
+				<p:submenu label="Resultados">
+					<p:menuitem value="Cadastrar" outcome="/cadastrar-resultados"
+						icon="ui-icon-check" rendered="#{sessaoBean.administrador}" />
+
+					<p:menuitem value="Visualizar" outcome="/resultados-rodada"
+						icon="fa fa-fw fa-trophy" />
+				</p:submenu>
+
 				<p:submenu label="Palpites">
 					<p:menuitem value="Salvar" outcome="/palpites" icon="ui-icon-plus"
 						rendered="#{sessaoBean.jogador}" />

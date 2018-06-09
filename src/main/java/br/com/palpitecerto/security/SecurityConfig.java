@@ -49,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/home.xhtml", "/acesso-negado.xhtml", "/pagina-nao-encontrada.xhtml").authenticated()
 				.antMatchers("/administrador/**", "/campeonatos.xhtml", "/rodadas.xhtml", "/times.xhtml", "/cadastrar-resultados.xhtml").hasAnyRole("ADMINISTRADOR")
 				.antMatchers("/palpites.xhtml").hasAnyRole("JOGADOR")
-				.antMatchers("/lista-palpites.xhtml").hasAnyRole("ADMINISTRADOR", "JOGADOR")
+				.antMatchers("/lista-palpites.xhtml", "/resultados-rodada.xhtml", "/ranking.xhtml").hasAnyRole("ADMINISTRADOR", "JOGADOR")
 				.and()
 
 			.formLogin()

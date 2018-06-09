@@ -1,6 +1,7 @@
 package br.com.palpitecerto.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -40,7 +41,7 @@ public class Rodada implements Serializable {
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "rodada_partida", joinColumns = @JoinColumn(name = "id_rodada"), inverseJoinColumns = @JoinColumn(name = "id_partida"))
-	private List<Partida> partidas;
+	private List<Partida> partidas = new ArrayList<>();
 
 	@Type(type = "true_false")
 	@Column(name = "is_encerrada")

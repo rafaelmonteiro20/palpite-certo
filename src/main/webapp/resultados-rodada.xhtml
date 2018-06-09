@@ -5,53 +5,53 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui">
 
-	<ui:define name="titulo">Ranking</ui:define>
+	<ui:define name="titulo">Visualizar resultados</ui:define>
 
 	<ui:define name="conteudo">
-		<h1>Ranking</h1>
+		<h1>Visualizar resultados</h1>
 
 		<h:form id="form-tabela" prependId="false">
-			<h:panelGrid columns="2" cellpadding="15" rendered="false">
+			<h:panelGrid columns="2" cellpadding="15">
 				<h:panelGroup>
 					<strong><label class="control-label">Campeonato:</label></strong>
-					<p:selectOneMenu value="#{rankingBean.filter.campeonato}"
+					<p:selectOneMenu value="#{resultadosRodadasBean.campeonato}"
 						converter="campeonatoConverter">
 						<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
-						<f:selectItems value="#{rankingBean.campeonatos}" var="camp"
-							itemLabel="#{camp.nome}" itemValue="#{camp}" />
-						<p:ajax listener="#{rankingBean.buscarRodadas()}"
+						<f:selectItems value="#{resultadosRodadasBean.campeonatos}" var="camp"
+							itemLabel="#{camp.nome} - #{camp.periodo}" itemValue="#{camp}" />
+						<p:ajax listener="#{resultadosRodadasBean.buscarRodadas()}"
 							update="id-rodadas" />
 					</p:selectOneMenu>
 				</h:panelGroup>
 
 				<h:panelGroup>
 					<strong><label class="control-label">Rodada:</label></strong>
-					<p:selectOneMenu id="id-rodadas" value="#{rankingBean.filter.rodada}"
+					<p:selectOneMenu id="id-rodadas"
+						value="#{resultadosRodadasBean.rodada}"
 						converter="rodadaConverter">
 						<f:selectItem itemLabel="Selecione" noSelectionOption="true" />
-						<f:selectItems value="#{rankingBean.rodadas}" var="rodada"
+						<f:selectItems value="#{resultadosRodadasBean.rodadas}" var="rodada"
 							itemLabel="#{rodada.numero}ª rodada" itemValue="#{rodada}" />
-						<p:ajax process="@form" listener="#{rankingBean.buscarRanking()}" update="tabela" />
+						<p:ajax process="@form" update="tabela" />
 					</p:selectOneMenu>
 				</h:panelGroup>
 			</h:panelGrid>
-			
 			<hr />
 
 			<p:dataTable id="tabela"
-				value="#{rankingBean.rankiados}" var="rank"
-				emptyMessage="Nenhum jogador encontrado."  rowIndexVar="index">
-				
-				<p:column headerText="#" styleClass="center" width="100">
-					#{index + 1}°
+				value="#{resultadosRodadasBean.rodada.partidas}" var="partida"
+				emptyMessage="Nenhuma partida encontrada.">
+
+				<p:column headerText="Mandante">
+					#{partida.mandante}
 				</p:column>
 				
-				<p:column headerText="Jogador">
-					#{rank.jogador}
+				<p:column headerText="Visitante">
+					#{partida.visitante}
 				</p:column>
 
-				<p:column headerText="Pontuaçao" styleClass="center" width="200">
-					#{rank.pontuacao}
+				<p:column headerText="Resultado" width="150" style="text-align: center">
+					#{partida.resultado.descricao}
 				</p:column>
 			</p:dataTable>
 		</h:form>

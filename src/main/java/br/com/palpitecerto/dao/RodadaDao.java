@@ -50,6 +50,16 @@ public class RodadaDao implements Serializable {
 		return manager.createQuery("FROM Rodada WHERE campeonato = :campeonato", Rodada.class)
 				.setParameter("campeonato", campeonato).getResultList();
 	}
+	
+	public List<Rodada> buscarRodadasEncerradasPor(Campeonato campeonato) {
+		return manager.createQuery("FROM Rodada r WHERE r.campeonato = :campeonato and r.encerrada = 'T'", Rodada.class)
+				.setParameter("campeonato", campeonato).getResultList();
+	}
+	
+	public List<Rodada> buscarRodadasNaoEncerradasPor(Campeonato campeonato) {
+		return manager.createQuery("FROM Rodada r WHERE r.campeonato = :campeonato and r.encerrada = 'F'", Rodada.class)
+				.setParameter("campeonato", campeonato).getResultList();
+	}
 
 	public Integer buscarUltimaRodadaCadastrada(Campeonato campeonato) {
 		try {

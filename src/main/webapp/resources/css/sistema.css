@@ -91,3 +91,21 @@ a.btn-close {
 a.btn-close:hover {
 	color: #005cbf !important;
 }
+
+@media ( max-width : 960px) {
+	.retira-margem {
+		margin-left: 0px !important;
+	}
+}
+
+.retira-margem {
+	margin-left: -211px;
+}
+
+.dialog-status-centro {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-left: -30px;
+	margin-top: -70px;
+}

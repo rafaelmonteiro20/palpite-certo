@@ -61,4 +61,12 @@ public class RodadaService implements Serializable {
 	public List<Partida> buscarPartidasPorRodada(Rodada rodada) {
 		return rodadaDao.buscarPartidasPorRodada(rodada);
 	}
+	
+	public List<Rodada> buscarRodadasEncerradasPor(Campeonato campeonato) {
+		return rodadaDao.buscarRodadasEncerradasPor(campeonato);
+	}
+	
+	public List<Rodada> buscarRodadasNaoEncerradasPor(Campeonato campeonato) {
+		return rodadaDao.buscarRodadasNaoEncerradasPor(campeonato);
+	}
 }
