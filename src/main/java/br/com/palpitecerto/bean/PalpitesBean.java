@@ -77,7 +77,10 @@ public class PalpitesBean implements Serializable {
 	}
 
 	public void buscarRodadas() {
-		rodadas = rodadaService.buscarPorCampeonato(campeonatoSelecionado);
+		if(usuarioLogado.isJogador() && facesUtil.getUrl().equals("/palpites.xhtml"))
+			rodadas = rodadaService.buscarRodadasNaoEncerradasPor(campeonatoSelecionado);
+		else
+			rodadas = rodadaService.buscarPorCampeonato(campeonatoSelecionado);
 	}
 
 	public void buscarPalpites() {

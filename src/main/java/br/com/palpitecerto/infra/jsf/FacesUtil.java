@@ -50,4 +50,8 @@ public class FacesUtil implements Serializable {
 		PrimeFaces.current().executeScript(script);
 	}
 	
+	public String getUrl() {
+		return FacesContext.getCurrentInstance().getViewRoot().getViewId();
+	}
+	
 }
